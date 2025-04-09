@@ -1,1 +1,12 @@
 @import "tailwindcss";
+
+@theme {
+    --color-mainBackgroundColor: #131316;
+    --color-columnBackgroundColor: #161C22;
+}
+
+html,
+body,
+#root {
+    @apply bg-mainBackgroundColor text-white;
+}
