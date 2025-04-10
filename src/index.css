@@ -10,3 +10,12 @@ body,
 #root {
     @apply bg-mainBackgroundColor text-white;
 }
+
+::-webkit-scrollbar {
+    width: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    @apply bg-fuchsia-700 rounded-xl;
+}
+
