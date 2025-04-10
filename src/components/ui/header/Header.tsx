@@ -2,7 +2,8 @@ import { Link } from 'react-router-dom';
 import Pencil from '../../../assets/icons/Pencil.tsx';
 import clsx from 'clsx';
 import { FC } from 'react';
-import { THeaderProps } from './type.ts';
+import { THeaderProps } from '../../../types/TheaderProps.ts';
+
 
 const HeaderUI: FC<THeaderProps> = ({ isActive }) => {
   return (
