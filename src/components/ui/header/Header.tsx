@@ -1,16 +1,12 @@
-import { Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Pencil from '../../../assets/icons/Pencil.tsx';
 import clsx from 'clsx';
 import { FC } from 'react';
+import { THeaderProps } from './type.ts';
 
-type THeaderProps = {
-  isActive: (path: string) => Boolean;
-}
-
-const HeaderUI: FC<THeaderProps> = ({isActive}) => {
-
+const HeaderUI: FC<THeaderProps> = ({ isActive }) => {
   return (
-    <div className='p-6 bg-[#1c1c21] flex justify-between text-3xl text-gray-300'>
+    <nav className='p-6 bg-[#1c1c21] flex justify-between text-3xl text-gray-300'>
       <div className='flex gap-10'>
         <Link
           to={'/issues'}
@@ -18,6 +14,7 @@ const HeaderUI: FC<THeaderProps> = ({isActive}) => {
             'relative pb-1 group hover:text-white transition-colors',
             isActive('/issues') && 'text-white'
           )}
+          aria-current={isActive('/issues') ? 'page' : undefined}
         >
           Все задачи
           <span className={clsx(
@@ -31,6 +28,7 @@ const HeaderUI: FC<THeaderProps> = ({isActive}) => {
             'relative pb-1 group hover:text-white transition-colors',
             isActive('/boards') && 'text-white'
           )}
+          aria-current={isActive('/boards') ? 'page' : undefined}
         >
           Проекты
           <span className={clsx(
@@ -42,14 +40,14 @@ const HeaderUI: FC<THeaderProps> = ({isActive}) => {
       <button
         className='
           justify-self-end flex items-end justify-center gap-2
-          relative pb-1 group hover:text-white transition-colors'
+          relative pb-1 group hover:cursor-pointer hover:text-white transition-colors'
       >
         Создать задачу
         <Pencil />
         <span className="absolute bottom-0 left-0 w-0 h-0.5
          bg-white transition-all duration-300 group-hover:w-full" />
       </button>
-    </div>
+    </nav>
   );
 };
 
