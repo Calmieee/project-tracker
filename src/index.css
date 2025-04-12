@@ -12,10 +12,10 @@ body,
 }
 
 ::-webkit-scrollbar {
-    width: 4px;
+    width: 5px;
 }
 
 ::-webkit-scrollbar-thumb {
-    @apply bg-fuchsia-700 rounded-xl;
+    @apply bg-rose-700 rounded-xl;
 }
 

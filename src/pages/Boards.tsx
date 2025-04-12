@@ -1,6 +1,5 @@
-// pages/Boards.tsx
 import { useQuery } from '@tanstack/react-query';
-import { BoardsUI } from '../components/ui/boards/Boards.tsx';
+import { BoardsUI } from '../components/ui';
 import { getBoards } from '../api/Boards.ts';
 
 const Boards = () => {

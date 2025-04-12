@@ -1,9 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
-import Issues from '../pages/Issues.tsx';
-import Boards from '../pages/Boards.tsx';
-import Board from '../pages/Board.tsx';
-import NotFound404 from '../pages/NotFound404.tsx';
 import Header from './Header.tsx';
+import { Board, Boards, Issues, NotFound404 } from '../pages';
 
 
 const App = () => {

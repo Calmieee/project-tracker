@@ -11,7 +11,7 @@ export enum TaskStatus {
 }
 
 export type TTask = {
-  id: number;
+  id: string;
   title: string;
   description: string;
   priority: TaskPriority;
@@ -22,9 +22,4 @@ export type TTask = {
     email: string;
     avatarUrl: string;
   }
-}
-
-export type TBoardTask = {
-  boardName: string;
-  tasks: TTask[];
 }

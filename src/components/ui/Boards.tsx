@@ -1,7 +1,7 @@
-import { TBoardsUIProps } from "../../../types/TBoardsProps";
-import BoardCardUI from '../BoardCard/BoardCard.tsx';
+import BoardCardUI from './BoardCard.tsx';
+import { TBoardsUIProps } from '../../types';
 
-export const BoardsUI = ({ boards, isLoading, isError, error }: TBoardsUIProps) => {
+const BoardsUI = ({ boards, isLoading, isError, error }: TBoardsUIProps) => {
   if (isLoading) return <div>Загрузка...</div>;
   if (isError) return <div>Ошибка {error?.message}</div>;
   if (!boards.length) return <div>Нет данных</div>;
@@ -14,3 +14,5 @@ export const BoardsUI = ({ boards, isLoading, isError, error }: TBoardsUIProps) 
     </ul>
   );
 };
+
+export default BoardsUI;

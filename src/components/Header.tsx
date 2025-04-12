@@ -1,5 +1,5 @@
 import { useLocation } from 'react-router-dom';
-import HeaderUI from './ui/header/Header.tsx';
+import { HeaderUI } from './ui';
 
 const Header = () => {
   const location = useLocation();

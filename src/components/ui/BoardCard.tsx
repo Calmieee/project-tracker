@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { TBoard } from '../../../types/TBoard.ts';
+import { TBoard } from '../../types';
 
 const BoardCardUI = ({ board }: { board: TBoard }) => (
   <li className="w-[30%]">

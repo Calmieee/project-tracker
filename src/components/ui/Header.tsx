@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
-import Pencil from '../../../assets/icons/Pencil.tsx';
+import Pencil from '../../assets/icons/Pencil.tsx';
 import clsx from 'clsx';
 import { FC } from 'react';
-import { THeaderProps } from '../../../types/TheaderProps.ts';
+import { HeaderProps } from '../../types';
 
 
-const HeaderUI: FC<THeaderProps> = ({ isActive }) => {
+const HeaderUI: FC<HeaderProps> = ({ isActive }) => {
   return (
     <nav className='p-6 bg-[#1c1c21] flex justify-between text-3xl text-gray-300'>
       <div className='flex gap-10'>

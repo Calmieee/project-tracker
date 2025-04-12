@@ -1,37 +1,73 @@
 import { Navigate, useParams } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { getBoardById } from '../api/Boards';
-import { TaskStatus } from '../types/TTask';
-import { Column } from '../components/ui/Column/Column.tsx';
+import { useEffect} from 'react';
+import { useBoardDnD } from '../hooks/useBoardDnD';
+import { useDnDSensors } from '../hooks/useDnDSensors.ts';
+import { updateTaskStatus } from '../api/Tasks.ts';
+import { TaskStatus, TTask } from '../types';
+import { COLUMSIDS } from '../constants.ts';
+import { BoardUI } from '../components/ui';
+import { ErrorBoundary } from '../components/ErrorBoundary.tsx';
+
 
 const Board = () => {
   const { id } = useParams();
-
-  if (!id) return <Navigate to='/*' replace/>;
+  const sensors = useDnDSensors();
 
   const { data, isPending, isError, error } = useQuery({
     queryKey: ['getBoardById', id],
     queryFn: () => getBoardById(id),
   });
+
+  const { mutate: updateStatus } = useMutation({
+    mutationFn: updateTaskStatus
+  });
+
+  const tasksByStatus = {
+    [TaskStatus.BACKLOG]: data?.data.tasks.filter((task: TTask) => task.status === TaskStatus.BACKLOG) || [],
+    [TaskStatus.IN_PROGRESS]: data?.data.tasks.filter((task: TTask) => task.status === TaskStatus.IN_PROGRESS) || [],
+    [TaskStatus.DONE]: data?.data.tasks.filter((task: TTask) => task.status === TaskStatus.DONE) || [],
+  };
+
+  const {
+    columns,
+    setColumns,
+    activeTask,
+    onDragStart,
+    onDragEnd,
+    onDragOver,
+  } = useBoardDnD(tasksByStatus, updateStatus);
+
+  useEffect(() => {
+    if (data) {
+      setColumns({
+        [TaskStatus.BACKLOG]: tasksByStatus[TaskStatus.BACKLOG],
+        [TaskStatus.IN_PROGRESS]: tasksByStatus[TaskStatus.IN_PROGRESS],
+        [TaskStatus.DONE]: tasksByStatus[TaskStatus.DONE],
+      });
+    }
+  }, [data]);
+
+  if (!id) return <Navigate to="/*" replace />;
   if (isPending) return <div>Загрузка...</div>;
   if (isError) return <div>Error: {error.message}</div>;
 
-  const tasksByStatus = {
-    [TaskStatus.BACKLOG]: data.data.tasks.filter(task => task.status === TaskStatus.BACKLOG),
-    [TaskStatus.IN_PROGRESS]: data.data.tasks.filter(task => task.status === TaskStatus.IN_PROGRESS),
-    [TaskStatus.DONE]: data.data.tasks.filter(task => task.status === TaskStatus.DONE),
-  };
-
   return (
-    <main className="p-4 container mx-auto box-border">
-      <h1 className="text-2xl font-bold mb-6 text-white">{data.data.boardName}</h1>
-      <div className="flex gap-4 h-[80vh]">
-        <Column status={TaskStatus.BACKLOG} tasks={tasksByStatus[TaskStatus.BACKLOG]} />
-        <Column status={TaskStatus.IN_PROGRESS} tasks={tasksByStatus[TaskStatus.IN_PROGRESS]} />
-        <Column status={TaskStatus.DONE} tasks={tasksByStatus[TaskStatus.DONE]} />
-      </div>
-    </main>
+    <ErrorBoundary>
+      <BoardUI
+        columnsIds={COLUMSIDS}
+        columns={columns}
+        activeTask={activeTask}
+        data={data}
+        sensors={sensors}
+        onDragStart={onDragStart}
+        onDragEnd={onDragEnd}
+        onDragOver={onDragOver}
+      />
+    </ErrorBoundary>
   );
 };
+
 
 export default Board;
