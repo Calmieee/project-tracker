@@ -15,7 +15,7 @@ const BoardUI = (props: TBoardUIProps) =>  (
       onDragOver={props.onDragOver}
     >
       <h1 className="text-2xl font-bold mb-6 text-white">{props.data.data.boardName}</h1>
-      <div className="flex gap-4 h-[80vh]">
+      <div className="flex gap-8 h-[80vh]">
         <SortableContext items={props.columnsIds}>
           <Column status={TaskStatus.BACKLOG} tasks={props.columns[TaskStatus.BACKLOG]} />
           <Column status={TaskStatus.IN_PROGRESS} tasks={props.columns[TaskStatus.IN_PROGRESS]} />

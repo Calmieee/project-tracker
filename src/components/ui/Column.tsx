@@ -18,7 +18,7 @@ const ColumnUI = ({ status, tasks }: StatusColumnUIProps) =>  {
   });
 
   return (
-    <div ref={setNodeRef} className="bg-[#1a1a1e]/80 backdrop-blur-sm  rounded-lg p-4 flex-1 min-w-[280px] h-full overflow-y-auto min-h-[200px]">
+    <div ref={setNodeRef} className="bg-[#1a1a1e]/80 backdrop-blur-sm  rounded-lg p-4 flex-1 min-w-[360px] overflow-y-auto h-full min-h-[200px]">
       <h2 className="font-semibold text-lg mb-4 text-white">
         {status}
         <span className="ml-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 text-xs px-2 py-1 rounded-full">

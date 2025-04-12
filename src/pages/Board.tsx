@@ -1,14 +1,14 @@
 import { Navigate, useParams } from 'react-router-dom';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { getBoardById } from '../api/Boards';
-import { useEffect} from 'react';
 import { useBoardDnD } from '../hooks/useBoardDnD';
 import { useDnDSensors } from '../hooks/useDnDSensors.ts';
 import { updateTaskStatus } from '../api/Tasks.ts';
-import { TaskStatus, TTask } from '../types';
+import { TaskStatus } from '../types';
 import { COLUMSIDS } from '../constants.ts';
 import { BoardUI } from '../components/ui';
 import { ErrorBoundary } from '../components/ErrorBoundary.tsx';
+import { useMemo } from 'react';
 
 
 const Board = () => {
@@ -24,30 +24,20 @@ const Board = () => {
     mutationFn: updateTaskStatus
   });
 
-  const tasksByStatus = {
-    [TaskStatus.BACKLOG]: data?.data.tasks.filter((task: TTask) => task.status === TaskStatus.BACKLOG) || [],
-    [TaskStatus.IN_PROGRESS]: data?.data.tasks.filter((task: TTask) => task.status === TaskStatus.IN_PROGRESS) || [],
-    [TaskStatus.DONE]: data?.data.tasks.filter((task: TTask) => task.status === TaskStatus.DONE) || [],
-  };
+  const tasksByStatus = useMemo(() => ({
+    [TaskStatus.BACKLOG]: data?.data.tasks.filter(task => task.status === TaskStatus.BACKLOG) || [],
+    [TaskStatus.IN_PROGRESS]: data?.data.tasks.filter(task => task.status === TaskStatus.IN_PROGRESS) || [],
+    [TaskStatus.DONE]: data?.data.tasks.filter(task => task.status === TaskStatus.DONE) || [],
+  }), [data]);
 
   const {
     columns,
-    setColumns,
     activeTask,
     onDragStart,
     onDragEnd,
     onDragOver,
   } = useBoardDnD(tasksByStatus, updateStatus);
 
-  useEffect(() => {
-    if (data) {
-      setColumns({
-        [TaskStatus.BACKLOG]: tasksByStatus[TaskStatus.BACKLOG],
-        [TaskStatus.IN_PROGRESS]: tasksByStatus[TaskStatus.IN_PROGRESS],
-        [TaskStatus.DONE]: tasksByStatus[TaskStatus.DONE],
-      });
-    }
-  }, [data]);
 
   if (!id) return <Navigate to="/*" replace />;
   if (isPending) return <div>Загрузка...</div>;

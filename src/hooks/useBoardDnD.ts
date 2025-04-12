@@ -10,18 +10,26 @@ import { TaskStatus, TTask } from '../types';
 type TaskColumns = Record<TaskStatus, TTask[]>;
 
 export const useBoardDnD = (
-  initialTasks: TaskColumns,
+  tasks: TaskColumns,
   updateTaskStatus: (params: { taskId: string; status: TaskStatus }) => void
 ) => {
-  const [columns, setColumns] = useState<TaskColumns>(initialTasks);
+  const [columns, setColumns] = useState<TaskColumns>(tasks);
   const [activeTask, setActiveTask] = useState<TTask | null>(null);
-  const lastUpdateRef = useRef<{taskId: string, status: TaskStatus} | null>(null);
+  const lastUpdateRef = useRef<{ taskId: string; status: TaskStatus } | null>(null);
   const updateTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const dragTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    setColumns(tasks);
+  }, [tasks]);
 
   useEffect(() => {
     return () => {
       if (updateTimeoutRef.current) {
         clearTimeout(updateTimeoutRef.current);
+      }
+      if (dragTimeoutRef.current) {
+        clearTimeout(dragTimeoutRef.current);
       }
     };
   }, []);
@@ -74,46 +82,52 @@ export const useBoardDnD = (
 
     if (!toColumn || fromColumn === toColumn) return;
 
-    setColumns((prev) => {
-      const sourceTasks = [...prev[fromColumn]];
-      const destinationTasks = [...prev[toColumn]];
+    dragTimeoutRef.current = setTimeout(() => {
+      setColumns((prev) => {
+        const sourceTasks = [...prev[fromColumn]];
+        const destinationTasks = [...prev[toColumn]];
 
-      const taskIndex = sourceTasks.findIndex((t) => t.id === active.id);
-      if (taskIndex === -1) return prev;
+        const taskIndex = sourceTasks.findIndex((t) => t.id === active.id);
+        if (taskIndex === -1) return prev;
 
-      const [movedTask] = sourceTasks.splice(taskIndex, 1);
-      movedTask.status = toColumn;
+        const [movedTask] = sourceTasks.splice(taskIndex, 1);
+        movedTask.status = toColumn;
 
-      destinationTasks.unshift(movedTask);
+        const overIndex = destinationTasks.findIndex((t) => t.id === over.id);
+        if (overIndex === -1) {
+          destinationTasks.push(movedTask);
+        } else {
+          destinationTasks.splice(overIndex, 0, movedTask);
+        }
 
-      return {
-        ...prev,
-        [fromColumn]: sourceTasks,
-        [toColumn]: destinationTasks,
-      };
-    });
+        return {
+          ...prev,
+          [fromColumn]: sourceTasks,
+          [toColumn]: destinationTasks,
+        };
+      });
 
-    const currentTaskStatus = { taskId: activeTask.id, status: toColumn };
-    if (
-      !lastUpdateRef.current ||
-      lastUpdateRef.current.taskId !== currentTaskStatus.taskId ||
-      lastUpdateRef.current.status !== currentTaskStatus.status
-    ) {
-      lastUpdateRef.current = currentTaskStatus;
+      const currentTaskStatus = { taskId: activeTask.id, status: toColumn };
+      if (
+        !lastUpdateRef.current ||
+        lastUpdateRef.current.taskId !== currentTaskStatus.taskId ||
+        lastUpdateRef.current.status !== currentTaskStatus.status
+      ) {
+        lastUpdateRef.current = currentTaskStatus;
 
-      if (updateTimeoutRef.current) {
-        clearTimeout(updateTimeoutRef.current);
+        if (updateTimeoutRef.current) {
+          clearTimeout(updateTimeoutRef.current);
+        }
+
+        updateTimeoutRef.current = setTimeout(() => {
+          updateTaskStatus(currentTaskStatus);
+        }, 300);
       }
-
-      updateTimeoutRef.current = setTimeout(() => {
-        updateTaskStatus(currentTaskStatus);
-      }, 300);
-    }
+    }, 100);
   };
 
   return {
     columns,
-    setColumns,
     activeTask,
     onDragStart,
     onDragEnd,

@@ -8,7 +8,7 @@ const App = () => {
     <div>
       <Header />
       <Routes>
-        <Route path="/" element={<Navigate to='/issues' replace />} />
+        <Route path="/" element={<Navigate to='/boards' replace />} />
         <Route path="/issues" element={<Issues />} />
         <Route path='boards' element={<Boards />} />
         <Route path='board/:id' element={<Board />}/>
