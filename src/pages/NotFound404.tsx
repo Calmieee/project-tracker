@@ -1,4 +1,4 @@
-import Flag from '../assets/icons/Flag.tsx';
+import Flag from '../icons/Flag.tsx';
 import { Link } from 'react-router-dom';
 
 const NotFound404 = () => {

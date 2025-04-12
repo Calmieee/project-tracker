@@ -10,7 +10,7 @@ export enum TaskStatus {
   DONE = 'Done'
 }
 
-export type TTask = {
+export interface TTask  {
   id: string;
   title: string;
   description: string;
@@ -22,4 +22,9 @@ export type TTask = {
     email: string;
     avatarUrl: string;
   }
+}
+
+export interface TIssues extends TTask {
+  boardId: number;
+  boardName: string;
 }

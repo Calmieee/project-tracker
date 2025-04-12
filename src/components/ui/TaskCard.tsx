@@ -37,7 +37,7 @@ const TaskCardUI = ({ task }: { task: TTask }) => {
         {...attributes}
         {...listeners}
          className={clsx(
-           'w-full min-h-[180px] h-1/5 min-w-[320px] bg-gray-900 p-3 rounded-lg',
+           'w-full min-h-[180px] h-1/5 min-w-[320px] bg-[#1a1a1e]/80 p-3 rounded-md',
            'border-4 border-transparent border-l-4 flex flex-col justify-between',
            'transition-shadow transition-colors duration-200 ease-in-out hover:cursor-grab',
            !isDragging && 'hover:shadow-[0_4px_12px_rgba(255,255,255,0.1)] hover:bg-[#23232a]',
