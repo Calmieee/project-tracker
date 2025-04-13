@@ -2,11 +2,14 @@ import { useRef } from 'react';
 import { useIssuesData } from '../hooks/useIssuesData';
 import { useIssuesFilter } from '../hooks/useIssuesFilter';
 import { useScrollManagement } from '../hooks/useScrollManagement';
-import { ScrollToTopButton, SearchAndFilter, SkeletonTaskItem, TaskList } from '../components/ui';
+import { ScrollToTopButton, SearchAndFilter, SkeletonTaskItem, IssuesList } from '../components/ui';
+import { Link, useLocation } from 'react-router-dom';
 
 const Issues = () => {
   const { data, isPending, isError, error } = useIssuesData();
   const listRef = useRef<HTMLUListElement>(null);
+  const location = useLocation();
+
 
   const {
     searchTerm,
@@ -64,7 +67,7 @@ const Issues = () => {
         setBoardFilter={setBoardFilter}
         boards={boards}
       />
-      <TaskList
+      <IssuesList
         listRef={listRef}
         tasks={visibleTasksList}
         isLoadingMore={isLoadingMore}
@@ -72,17 +75,21 @@ const Issues = () => {
         searchTerm={searchTerm}
       />
       <ScrollToTopButton show={showScrollButton} onClick={scrollToTop} />
-      <button className='
-        absolute bottom-9
-        right-20 text-3xl
-        border-2 border-transparent
-        p-2 rounded-md bg-blue-900
-       text-gray-200
-       transition-colors duration-150 ease-in-out
-        hover:cursor-pointer hover:bg-blue-800
-      '>
+      <Link
+        to="/issues/create"
+        state={{ background: { pathname: location.pathname, search: location.search } }}
+        className='
+          absolute bottom-9
+          right-20 text-3xl
+          border-2 border-transparent
+          p-2 rounded-md bg-blue-900
+          text-gray-200
+          transition-colors duration-150 ease-in-out
+          hover:cursor-pointer hover:bg-blue-800
+        '
+      >
         Создать задачу
-      </button>
+      </Link>
     </main>
   );
 };

@@ -1,9 +1,5 @@
 import ArrowUp from '../../icons/ArrowUp.tsx';
-
-interface ScrollToTopButtonProps {
-  show: boolean;
-  onClick: () => void;
-}
+import { ScrollToTopButtonProps } from '../../types';
 
 const ScrollToTopButton = ({ show, onClick }: ScrollToTopButtonProps) => {
   if (!show) return null;

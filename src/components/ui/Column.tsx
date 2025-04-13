@@ -4,9 +4,7 @@ import { useMemo } from 'react';
 import { useDroppable } from '@dnd-kit/core';
 import TaskCard from './TaskCard.tsx';
 
-
 const ColumnUI = ({ status, tasks }: StatusColumnUIProps) =>  {
-
   const tasksIds = useMemo(() => tasks.map((task) => task.id), [tasks]);
 
   const { setNodeRef } = useDroppable({
@@ -28,8 +26,7 @@ const ColumnUI = ({ status, tasks }: StatusColumnUIProps) =>  {
       <ul className="flex flex-grow flex-col gap-6 p-1">
         <SortableContext items={tasksIds} >
           {tasks.map(task => (
-
-            <TaskCard key={task.id} task={task} />
+              <TaskCard key={task.id} task={task} />
           ))}
         </SortableContext>
       </ul>

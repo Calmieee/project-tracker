@@ -9,9 +9,8 @@ const SkeletonTaskItem = () => (
           <div className="h-4 bg-gray-700 rounded w-1/4"></div>
         </div>
       </div>
-      <div className="flex gap-3">
+      <div className="flex items-center">
         <div className="w-20 h-6 bg-gray-700 rounded-md"></div>
-        <div className="w-16 h-6 bg-gray-700 rounded-md"></div>
       </div>
     </div>
   </div>

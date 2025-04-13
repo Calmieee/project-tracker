@@ -1,20 +1,13 @@
 import { Popover } from "@headlessui/react";
-
-interface FilterPanelProps {
-  statusFilter: string[];
-  setStatusFilter: (value: string[]) => void;
-  boardFilter: string[];
-  setBoardFilter: (value: string[]) => void;
-  boards: string[];
-}
+import { FilterPanelProps } from '../../types';
 
 const FilterPanel = ({
-                       statusFilter,
-                       setStatusFilter,
-                       boardFilter,
-                       setBoardFilter,
-                       boards,
-                     }: FilterPanelProps) => {
+statusFilter,
+setStatusFilter,
+boardFilter,
+setBoardFilter,
+boards,
+}: FilterPanelProps) => {
   return (
     <Popover.Panel className="absolute z-10 mt-2 w-56 origin-top-right rounded-md bg-[#1a1a1e] shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none border border-gray-700">
       <div className="py-1 max-h-80 overflow-y-auto">
@@ -41,7 +34,6 @@ const FilterPanel = ({
             {status}
           </label>
         ))}
-
         <div className="px-3 py-2 text-sm text-gray-400 border-b border-gray-700 mt-2">
           Доска
         </div>
@@ -65,7 +57,6 @@ const FilterPanel = ({
             {board}
           </label>
         ))}
-
         {(statusFilter.length > 0 || boardFilter.length > 0) && (
           <button
             onClick={() => {
