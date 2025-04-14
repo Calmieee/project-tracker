@@ -7,7 +7,6 @@ import { updateTaskStatus } from '../api/Tasks.ts';
 import { TaskStatus } from '../types';
 import { COLUMSIDS } from '../constants.ts';
 import { BoardUI } from '../components/ui';
-import { ErrorBoundary } from '../components/ErrorBoundary.tsx';
 import { useMemo } from 'react';
 
 const Board = () => {
@@ -46,18 +45,16 @@ const Board = () => {
   if (isError) return <div>Error: {error.message}</div>;
 
   return (
-    <ErrorBoundary>
-      <BoardUI
-        columnsIds={COLUMSIDS}
-        columns={columns}
-        activeTask={activeTask}
-        data={data}
-        sensors={sensors}
-        onDragStart={onDragStart}
-        onDragEnd={onDragEnd}
-        onDragOver={onDragOver}
-      />
-    </ErrorBoundary>
+    <BoardUI
+      columnsIds={COLUMSIDS}
+      columns={columns}
+      activeTask={activeTask}
+      data={data}
+      sensors={sensors}
+      onDragStart={onDragStart}
+      onDragEnd={onDragEnd}
+      onDragOver={onDragOver}
+    />
   );
 };
 

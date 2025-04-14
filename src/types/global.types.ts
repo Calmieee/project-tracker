@@ -1,4 +1,4 @@
-import { TaskStatus, TTask } from "./task.types";
+import { TaskStatus, TTask } from './task.types';
 
 export interface ScrollToTopButtonProps {
   show: boolean;
