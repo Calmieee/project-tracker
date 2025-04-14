@@ -1,54 +1,85 @@
-# React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# Примечание
 
-Currently, two official plugins are available:
+> Комментарии к коду предполагались к добавлению на завершающем этапе, однако не успел в дедлайн. Попытался максимально структурировать код и написать с упором на читаемость.
+>
+> Также я писал о проблеме и можно ли изменить некоторые роуты с сервера, ответа не пришло, поэтому пофиксил следующие роуты, чтобы избежать костылей:
+>
+>
+>
+> - GET /boards/{boardId} - в тело ответа добавил название доски
+>
+>  - GET /tasks/{taskId} - добавил id доски
+>
+ > 
+>  
+>
+> У формы в режиме редактирование недоступен выбор проекта, потому что нет поля в 	 соответсвующем роуте. Изменять роут не стал, так как, вероятно, так и задумано.
+>
+> В режиме создания недоступен выбор статуса, потому что нет такого поля в роуте. И здесь я не понял однозначно - должен ли он быть здесь. На сервере по умолчанию ставится статус бэклог и поэтому я подумал, что так и хотели изначально, чтобы задача только в бэклог падала.
+>
+  >
+>
+> Сохранение состояние формы включается только для режима создания задачи, чтобы при клике на задачу всегда были актуальные данные и не было расхождений между черновиком и серверными данными.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+<br/>
 
-## Expanding the ESLint configuration
+# Обоснование выбора необязательных технологий
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+ -  TailwindCSS и HeadlessUI использовал ислючительно для скоростки разработки. 
+	 - HeadlessUI предоставляет компоненты с готовой логикой без стилей.
+	 - TailwindCSS - только ради скорости вёрстки, особенно, когда надо на ходу придумывать.
+2. dnd-kit - это первый раз, когда я реализовал DnD, поэтому решил использовать более декларативный поход для скорости. К тому же, эта библиотека также производит множество оптимизаций с повторными рендерами.
+3. React Hook Form + zod - опять же скорость, но при этом это очень удобные инструменты, где с легкостью можно управлять состоянием и валидацией форм
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+4. Vite, а не Webpack, по нескольким причинам: 
+	- В Vite уже всё из коробки для сборки проекта, но можно и расширить настройки
+	-  Самое важное -  это реализация сборки dev-сервера. В Vite в рантайм берётся только тот фукционал, который нужен для страницы, а webpack и в dev-сборки собирает всё воедино в бандл и отдаёт, что в итоге выбор Vite даёт скорость сборки раз в 10 быстрее. 
+	- Посчитал избыточным Webpack для такого проекта.
+5. TanstackQuery и axios:
+	- Axios даёт более удобный и декларативный способ писать взаимодействия с сервером. 
+	- TanstackQuery по этой же причине. Я считаю его полноценным ассинхроным стейт-менедментом и у него очень много преимуществ. Некоторые из них, которые использовались, конечно, готовые состояния ответов и т.д., инвалидация кэша и автоматическое обновления данных на страницах.
+6. Eslint и Prettier для доп. отлова ошибок, стандартизации кода и поддержания чистоты кодовой базы
+
+# Инструкция по запуску
+Есть два два варианта запуска - через docker-compose и вручную.
+В обоих вариантах нужно создать .env с адресом бэкенда. Пример в файле .env.example
+#### Через docker-compose
+```
+docker-compose build 
+
+docker-compose up         // можно добавить флаг -d, чтобы запустилось в фоне.
+
+страница будет доступна по ссылке http://localhost:4173
+
+docker-compose down -v      //всё очистить
+```
+#### Вручную
+```
+npm i 
+
+//dev-сборка
+npm run dev
+
+страница будет доступна по ссылке http://localhost:5173
+
+//prod-сборка
+npm run build
+
+npm run preview
+
+
+страница будет доступна по ссылке http://localhost:4173
+
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+# Что можно было бы улучшить
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+1. Самое важное - добавить уведомление, что оповещает пользователя о успешном запросе создания/обновления задачи
+2. Адаптировать под мобильные устройства и в целом для разрешения приблизительно меньше 700-1000px
+3. Добавить компоненты лоадеров и заменить ими моковые.
+4. До конца вынести и разделить функционал на хуки/компоненты из файлов. 
+5. Покрыть unit-тестами
+6. Добавить светлую тему
+7. Пофикстить в некоторых местах дерганье ui
+8. Проверить компоненты на очень частые рендеры и если они есть, то мемоизировать их
