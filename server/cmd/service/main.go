@@ -7,6 +7,7 @@ package main
 
 import (
 	"log"
+	"time"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	_ "github.com/lev4rT/avito_fe_tech_internship_2025_wave2_backend/docs"
@@ -51,7 +52,14 @@ func main() {
 	getTasksHandler := get_tasks_handler.NewGetTasksHandler(db)
 
 	r := gin.Default()
-	r.Use(cors.Default())
+	r.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"*"},
+		AllowMethods:    []string{"*"},
+		AllowHeaders:    []string{"*"},
+		ExposeHeaders:   []string{"*"},
+		AllowCredentials: true,
+		MaxAge: 12 * time.Hour,
+	}))
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, ginSwagger.URL("/swagger/doc.json")))
 
