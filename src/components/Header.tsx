@@ -4,12 +4,9 @@ import { HeaderUI } from './ui';
 const Header = () => {
   const location = useLocation();
 
-  const isActive = (path: string): Boolean => {
-    return location.pathname === path;
-  }
+  const isActive = (path: string): boolean => location.pathname === path;
 
-  return <HeaderUI isActive={isActive} />
-
+  return <HeaderUI isActive={isActive} />;
 };
 
 export default Header;

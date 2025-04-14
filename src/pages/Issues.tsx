@@ -2,14 +2,18 @@ import { useRef } from 'react';
 import { useIssuesData } from '../hooks/useIssuesData';
 import { useIssuesFilter } from '../hooks/useIssuesFilter';
 import { useScrollManagement } from '../hooks/useScrollManagement';
-import { ScrollToTopButton, SearchAndFilter, SkeletonTaskItem, IssuesList } from '../components/ui';
+import {
+  ScrollToTopButton,
+  SearchAndFilter,
+  SkeletonTaskItem,
+  IssuesList
+} from '../components/ui';
 import { Link, useLocation } from 'react-router-dom';
 
 const Issues = () => {
   const { data, isPending, isError, error } = useIssuesData();
   const listRef = useRef<HTMLUListElement>(null);
   const location = useLocation();
-
 
   const {
     searchTerm,
@@ -22,7 +26,7 @@ const Issues = () => {
     boards,
     filterTasks,
     visibleTasksList,
-    loadMoreTasks,
+    loadMoreTasks
   } = useIssuesFilter(data);
 
   const { showScrollButton, scrollToTop } = useScrollManagement(
@@ -35,11 +39,11 @@ const Issues = () => {
 
   if (isPending) {
     return (
-      <div className="p-4 max-w-4xl mx-auto">
-        <div className="mb-4">
-          <div className="w-full h-10 bg-gray-700 rounded-md animate-pulse"></div>
+      <div className='p-4 w-6/12 mx-auto'>
+        <div className='mb-4'>
+          <div className='w-full h-10 bg-gray-700 rounded-md animate-pulse' />
         </div>
-        <div className="space-y-3">
+        <div className='space-y-3'>
           {[...Array(5)].map((_, i) => (
             <SkeletonTaskItem key={i} />
           ))}
@@ -50,14 +54,14 @@ const Issues = () => {
 
   if (isError) {
     return (
-      <div className="p-4 max-w-4xl mx-auto text-red-500">
+      <div className='p-4 w-6/12 mx-auto text-red-500'>
         Ошибка {error.message}
       </div>
     );
   }
 
   return (
-    <main className="p-4 max-w-4xl mx-auto">
+    <main className='p-4 w-7/12 mx-auto'>
       <SearchAndFilter
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
@@ -76,11 +80,13 @@ const Issues = () => {
       />
       <ScrollToTopButton show={showScrollButton} onClick={scrollToTop} />
       <Link
-        to="/issues/create"
-        state={{ background: { pathname: location.pathname, search: location.search } }}
+        to='/issues/create'
+        state={{
+          background: { pathname: location.pathname, search: location.search }
+        }}
         className='
           absolute bottom-9
-          right-20 text-3xl
+          text-3xl  right-10
           border-2 border-transparent
           p-2 rounded-md bg-blue-900
           text-gray-200

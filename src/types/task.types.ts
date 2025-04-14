@@ -2,12 +2,13 @@ import {
   DeepRequired,
   FieldErrorsImpl,
   GlobalError,
-  SubmitHandler,
   UseFormHandleSubmit,
   UseFormRegister
 } from 'react-hook-form';
 import { TaskSchemaType } from './TaskSchema.ts';
 import { RefObject } from 'react';
+import { TBoard } from './board.types.ts';
+import { TUser } from './global.types.ts';
 
 export enum TaskPriority {
   LOW = 'Low',
@@ -21,7 +22,7 @@ export enum TaskStatus {
   DONE = 'Done'
 }
 
-export interface TTask  {
+export interface TTask {
   id: string;
   title: string;
   description: string;
@@ -32,7 +33,7 @@ export interface TTask  {
     fullName: string;
     email: string;
     avatarUrl: string;
-  }
+  };
 }
 
 export interface TIssues extends TTask {
@@ -50,16 +51,18 @@ export interface TaskFormValues {
 }
 
 export interface TaskFormUIProps {
-  register: UseFormRegister<any>;
-  handleSubmit: UseFormHandleSubmit<any>;
+  register: UseFormRegister<TaskSchemaType>;
+  handleSubmit: UseFormHandleSubmit<TaskFormValues>;
   isEditMode: boolean;
-  onSubmit: SubmitHandler<any>;
-  projects: any[];
-  users: any[];
+  onSubmit: (data: TaskFormValues) => void;
+  projects: TBoard[];
+  users: TUser[];
   handleToBoard: () => void;
   isButtonActive: boolean;
   isReadyToRender: boolean;
-  errors: Partial<FieldErrorsImpl<DeepRequired<TaskSchemaType>>> & {root?: Record<string, GlobalError> & GlobalError};
+  errors: Partial<FieldErrorsImpl<DeepRequired<TaskSchemaType>>> & {
+    root?: Record<string, GlobalError> & GlobalError;
+  };
   isValid: boolean;
   isDirty: boolean;
 }
@@ -71,5 +74,3 @@ export interface TaskListProps {
   isEmpty: boolean;
   searchTerm: string;
 }
-
-

@@ -2,15 +2,15 @@ import { TaskListProps } from '../../types';
 import { SkeletonTaskItem, Issue } from './index';
 
 const IssuesList = ({
-listRef,
-tasks,
-isLoadingMore,
-isEmpty,
-searchTerm,
+  listRef,
+  tasks,
+  isLoadingMore,
+  isEmpty,
+  searchTerm
 }: TaskListProps) => {
   if (isEmpty) {
     return (
-      <div className="text-center py-8 text-gray-400">
+      <div className='text-center py-8 text-gray-400'>
         {searchTerm ? 'Задачи не найдены' : 'Нет задач для отображения'}
       </div>
     );
@@ -18,7 +18,7 @@ searchTerm,
   return (
     <ul
       ref={listRef}
-      className="space-y-3 max-h-[calc(100vh-200px)] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800"
+      className='space-y-3 max-h-[calc(100vh-200px)] overflow-y-auto'
     >
       {tasks.map((task) => (
         <Issue key={task.id} task={task} />

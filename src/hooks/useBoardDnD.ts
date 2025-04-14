@@ -1,13 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
-import {
-  DragStartEvent,
-  DragEndEvent,
-  DragOverEvent,
-} from '@dnd-kit/core';
+import { DragStartEvent, DragEndEvent, DragOverEvent } from '@dnd-kit/core';
 import { arrayMove } from '@dnd-kit/sortable';
-import { TaskStatus, TTask } from '../types';
-
-type TaskColumns = Record<TaskStatus, TTask[]>;
+import { TaskColumns, TaskStatus, TTask } from '../types';
 
 export const useBoardDnD = (
   tasks: TaskColumns,
@@ -15,7 +9,9 @@ export const useBoardDnD = (
 ) => {
   const [columns, setColumns] = useState<TaskColumns>(tasks);
   const [activeTask, setActiveTask] = useState<TTask | null>(null);
-  const lastUpdateRef = useRef<{ taskId: string; status: TaskStatus } | null>(null);
+  const lastUpdateRef = useRef<{ taskId: string; status: TaskStatus } | null>(
+    null
+  );
   const updateTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const dragTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -23,16 +19,17 @@ export const useBoardDnD = (
     setColumns(tasks);
   }, [tasks]);
 
-  useEffect(() => {
-    return () => {
+  useEffect(
+    () => () => {
       if (updateTimeoutRef.current) {
         clearTimeout(updateTimeoutRef.current);
       }
       if (dragTimeoutRef.current) {
         clearTimeout(dragTimeoutRef.current);
       }
-    };
-  }, []);
+    },
+    []
+  );
 
   const onDragStart = (event: DragStartEvent) => {
     if (event.active.data.current?.type === 'task') {
@@ -53,15 +50,15 @@ export const useBoardDnD = (
 
     const activeStatus = activeTask.status as TaskStatus;
     const columnTasks = columns[activeStatus];
-    const oldIndex = columnTasks.findIndex(t => t.id === active.id);
-    const newIndex = columnTasks.findIndex(t => t.id === over.id);
+    const oldIndex = columnTasks.findIndex((t) => t.id === active.id);
+    const newIndex = columnTasks.findIndex((t) => t.id === over.id);
 
     if (oldIndex !== -1 && newIndex !== -1) {
       const newTaskOrder = arrayMove(columnTasks, oldIndex, newIndex);
 
-      setColumns(prev => ({
+      setColumns((prev) => ({
         ...prev,
-        [activeStatus]: newTaskOrder,
+        [activeStatus]: newTaskOrder
       }));
     }
   };
@@ -103,7 +100,7 @@ export const useBoardDnD = (
         return {
           ...prev,
           [fromColumn]: sourceTasks,
-          [toColumn]: destinationTasks,
+          [toColumn]: destinationTasks
         };
       });
 
@@ -131,6 +128,6 @@ export const useBoardDnD = (
     activeTask,
     onDragStart,
     onDragEnd,
-    onDragOver,
+    onDragOver
   };
 };

@@ -9,14 +9,17 @@ interface ErrorBoundaryState {
   hasError: boolean;
 }
 
-export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+export class ErrorBoundary extends Component<
+  ErrorBoundaryProps,
+  ErrorBoundaryState
+> {
+  static getDerivedStateFromError(): ErrorBoundaryState {
+    return { hasError: true };
+  }
+
   constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = { hasError: false };
-  }
-
-  static getDerivedStateFromError(_: Error): ErrorBoundaryState {
-    return { hasError: true };
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
@@ -25,11 +28,15 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 
   render() {
     if (this.state.hasError) {
-      return  (
+      return (
         <div className='h-[80dvh] flex flex-col justify-center items-center gap-10'>
           <div className='flex flex-col justify-center items-center gap-2'>
-            <h2 className='text-4xl text-gray-300'>Произошла непредвиденная ошибка</h2>
-            <p className='text-xl text-gray-500'>Попробуйте обновить страницу или вернуться позже</p>
+            <h2 className='text-4xl text-gray-300'>
+              Произошла непредвиденная ошибка
+            </h2>
+            <p className='text-xl text-gray-500'>
+              Попробуйте обновить страницу или вернуться позже
+            </p>
           </div>
           <button
             onClick={() => window.location.reload()}

@@ -5,7 +5,7 @@ import { getBoards } from '../api/Boards.ts';
 const Boards = () => {
   const { data, isPending, isError, error } = useQuery({
     queryKey: ['getBoards'],
-    queryFn: getBoards,
+    queryFn: getBoards
   });
 
   return (

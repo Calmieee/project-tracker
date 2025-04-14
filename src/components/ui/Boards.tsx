@@ -7,7 +7,7 @@ const BoardsUI = ({ boards, isLoading, isError, error }: TBoardsUIProps) => {
   if (!boards.length) return <div>Нет данных</div>;
 
   return (
-    <ul className="flex flex-wrap justify-center h-full gap-9 p-4">
+    <ul className='flex flex-wrap justify-center h-full gap-9 p-4'>
       {boards.map((board) => (
         <BoardCardUI key={board.id} board={board} />
       ))}

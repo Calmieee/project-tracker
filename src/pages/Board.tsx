@@ -10,36 +10,38 @@ import { BoardUI } from '../components/ui';
 import { ErrorBoundary } from '../components/ErrorBoundary.tsx';
 import { useMemo } from 'react';
 
-
 const Board = () => {
   const { id } = useParams();
   const sensors = useDnDSensors();
 
   const { data, isPending, isError, error } = useQuery({
     queryKey: ['getBoardById', id],
-    queryFn: () => getBoardById(id),
+    queryFn: () => getBoardById(id)
   });
 
   const { mutate: updateStatus } = useMutation({
     mutationFn: updateTaskStatus
   });
 
-  const tasksByStatus = useMemo(() => ({
-    [TaskStatus.BACKLOG]: data?.data.tasks.filter(task => task.status === TaskStatus.BACKLOG) || [],
-    [TaskStatus.IN_PROGRESS]: data?.data.tasks.filter(task => task.status === TaskStatus.IN_PROGRESS) || [],
-    [TaskStatus.DONE]: data?.data.tasks.filter(task => task.status === TaskStatus.DONE) || [],
-  }), [data]);
+  const tasksByStatus = useMemo(
+    () => ({
+      [TaskStatus.BACKLOG]:
+        data?.data.tasks.filter((task) => task.status === TaskStatus.BACKLOG) ||
+        [],
+      [TaskStatus.IN_PROGRESS]:
+        data?.data.tasks.filter(
+          (task) => task.status === TaskStatus.IN_PROGRESS
+        ) || [],
+      [TaskStatus.DONE]:
+        data?.data.tasks.filter((task) => task.status === TaskStatus.DONE) || []
+    }),
+    [data]
+  );
 
-  const {
-    columns,
-    activeTask,
-    onDragStart,
-    onDragEnd,
-    onDragOver,
-  } = useBoardDnD(tasksByStatus, updateStatus);
+  const { columns, activeTask, onDragStart, onDragEnd, onDragOver } =
+    useBoardDnD(tasksByStatus, updateStatus);
 
-
-  if (!id) return <Navigate to="/*" replace />;
+  if (!id) return <Navigate to='/*' replace />;
   if (isPending) return <div>Загрузка...</div>;
   if (isError) return <div>Error: {error.message}</div>;
 
@@ -58,6 +60,5 @@ const Board = () => {
     </ErrorBoundary>
   );
 };
-
 
 export default Board;

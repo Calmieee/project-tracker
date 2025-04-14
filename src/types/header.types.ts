@@ -1,3 +1,3 @@
 export type HeaderProps = {
-  isActive: (path: string) => Boolean;
-}
+  isActive: (path: string) => boolean;
+};

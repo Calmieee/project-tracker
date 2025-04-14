@@ -4,7 +4,6 @@ import clsx from 'clsx';
 import { FC } from 'react';
 import { HeaderProps } from '../../types';
 
-
 const HeaderUI: FC<HeaderProps> = ({ isActive }) => {
   const location = useLocation();
   return (
@@ -19,10 +18,12 @@ const HeaderUI: FC<HeaderProps> = ({ isActive }) => {
           aria-current={isActive('/issues') ? 'page' : undefined}
         >
           Все задачи
-          <span className={clsx(
-            'absolute bottom-0 left-0 h-0.5 bg-white transition-all duration-300',
-            isActive('/issues') ? 'w-full' : 'w-0 group-hover:w-full'
-          )} />
+          <span
+            className={clsx(
+              'absolute bottom-0 left-0 h-0.5 bg-white transition-all duration-300',
+              isActive('/issues') ? 'w-full' : 'w-0 group-hover:w-full'
+            )}
+          />
         </Link>
         <Link
           to='/boards'
@@ -33,23 +34,29 @@ const HeaderUI: FC<HeaderProps> = ({ isActive }) => {
           aria-current={isActive('/boards') ? 'page' : undefined}
         >
           Проекты
-          <span className={clsx(
-            'absolute bottom-0 left-0 h-0.5 bg-white transition-all duration-300',
-            isActive('/boards') ? 'w-full' : 'w-0 group-hover:w-full'
-          )} />
+          <span
+            className={clsx(
+              'absolute bottom-0 left-0 h-0.5 bg-white transition-all duration-300',
+              isActive('/boards') ? 'w-full' : 'w-0 group-hover:w-full'
+            )}
+          />
         </Link>
       </div>
       <Link
         to='/issues/create'
-        state={{ background: { pathname: location.pathname, search: location.search } }}
+        state={{
+          background: { pathname: location.pathname, search: location.search }
+        }}
         className='
           justify-self-end flex items-end justify-center gap-2
           relative pb-1 group hover:cursor-pointer hover:text-white transition-colors'
       >
         Создать задачу
         <Pencil />
-        <span className="absolute bottom-0 left-0 w-0 h-0.5
-         bg-white transition-all duration-300 group-hover:w-full" />
+        <span
+          className='absolute bottom-0 left-0 w-0 h-0.5
+         bg-white transition-all duration-300 group-hover:w-full'
+        />
       </Link>
     </nav>
   );

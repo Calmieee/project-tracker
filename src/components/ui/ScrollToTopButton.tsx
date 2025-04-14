@@ -7,7 +7,13 @@ const ScrollToTopButton = ({ show, onClick }: ScrollToTopButtonProps) => {
   return (
     <button
       onClick={onClick}
-      className="fixed right-112 bottom-10 p-3 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-lg transition-all duration-300 hover:scale-110 hover:cursor-pointer"
+      className='
+        fixed right-55 bottom-35 p-3
+      bg-blue-600 hover:bg-blue-700
+          text-white rounded-full shadow-lg
+         transition-all duration-300
+          hover:scale-110 hover:cursor-pointer
+      '
     >
       <ArrowUp />
     </button>
