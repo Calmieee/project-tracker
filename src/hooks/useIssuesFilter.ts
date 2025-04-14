@@ -64,6 +64,12 @@ export const useIssuesFilter = (data: { data: TIssues[] } | undefined) => {
     []
   );
 
+  useEffect(() => {
+    if (filterTasks.length > visibleTasks) {
+      setVisibleTasks((prev) => Math.min(prev + 1, filterTasks.length));
+    }
+  }, [filterTasks.length]);
+
   return {
     searchTerm,
     setSearchTerm,
