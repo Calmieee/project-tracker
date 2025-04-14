@@ -7,7 +7,6 @@ package main
 
 import (
 	"log"
-	"time"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	_ "github.com/lev4rT/avito_fe_tech_internship_2025_wave2_backend/docs"
